@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+  lab-kali:
+    build: ./kali
+    container_name: kali
+    hostname: kali
+    # command: tail -F /etc/os-release
+    command: tail -f /dev/null
+    networks:
+      lab:
+        ipv4_address: 10.22.180.5
+
+  ssh-scan-target:
+    build: ./sshd-target
+    container_name: ssh-scan-target
+    hostname: ssh-scan-target
+    networks:
+      lab:
+        ipv4_address: 10.22.180.40
+
+  nginx-scan-target:
+    build: ./nginx-target
+    container_name: nginx-scan-target
+    hostname: nginx-scan-target
+    networks:
+      lab:
+        ipv4_address: 10.22.180.50
+
+
+networks:
+
+  lab:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.22.180.0/24
+          gateway: 10.22.180.1
